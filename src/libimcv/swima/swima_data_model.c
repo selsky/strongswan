@@ -19,10 +19,10 @@
  * ISO/IEC 19770-2-2015: Information Technology - Software Asset Management -
  * Part 2: Software Identification Tag
  */
-pen_type_t swima_data_model_iso_2015_swid_xml = { PEN_IETF, 1 };
+pen_type_t swima_data_model_iso_2015_swid_xml = { PEN_IETF, 0 };
 
 /**
  * ISO/IEC 19770-2-2009: Information Technology - Software Asset Management -
  * Part 2: Software Identification Tag
  */
-pen_type_t swima_data_model_iso_2009_swid_xml = { PEN_IETF, 2 };
+pen_type_t swima_data_model_iso_2009_swid_xml = { PEN_IETF, 1 };
