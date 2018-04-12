@@ -75,6 +75,20 @@ struct dhcp_transaction_t {
 	host_t* (*get_server)(dhcp_transaction_t *this);
 
 	/**
+	 * Set the DHCP lease time.
+	 *
+	 * @param lease_time		DHCP lease time
+	 */
+	void (*set_lease_time)(dhcp_transaction_t *this, uint32_t lease_time);
+
+	/**
+	 * Get the DHCP lease time.
+	 *
+	 * @return			DHCP lease time
+	 */
+	uint32_t (*get_lease_time)(dhcp_transaction_t *this);
+
+	/**
 	 * Add an additional attribute to serve to peer.
 	 *
 	 * @param type		type of attribute

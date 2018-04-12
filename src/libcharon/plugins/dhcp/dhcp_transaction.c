@@ -50,6 +50,11 @@ struct private_dhcp_transaction_t {
 	host_t *server;
 
 	/**
+	 * discovered DHCP lease time
+	 */
+	uint32_t lease_time;
+
+	/**
 	 * List of added attributes, as attribute_entry_t
 	 */
 	linked_list_t *attributes;
@@ -99,6 +104,18 @@ METHOD(dhcp_transaction_t, get_server, host_t*,
 	private_dhcp_transaction_t *this)
 {
 	return this->server;
+}
+
+METHOD(dhcp_transaction_t, set_lease_time, void,
+	private_dhcp_transaction_t *this, uint32_t lease_time)
+{
+	this->lease_time = lease_time;
+}
+
+METHOD(dhcp_transaction_t, get_lease_time, uint32_t,
+	private_dhcp_transaction_t *this)
+{
+	return this->lease_time;
 }
 
 METHOD(dhcp_transaction_t, add_attribute, void,
@@ -176,6 +193,8 @@ dhcp_transaction_t *dhcp_transaction_create(uint32_t id,
 			.get_address = _get_address,
 			.set_server = _set_server,
 			.get_server = _get_server,
+			.set_lease_time = _set_lease_time,
+			.get_lease_time = _get_lease_time,
 			.add_attribute = _add_attribute,
 			.create_attribute_enumerator = _create_attribute_enumerator,
 			.destroy = _destroy,

@@ -73,6 +73,7 @@ METHOD(attribute_provider_t, acquire_address, host_t*,
 	identification_t *id;
 	char *pool;
 	host_t *vip = NULL;
+	uint32_t lease_time;
 
 	if (requested->get_family(requested) != AF_INET)
 	{
@@ -93,6 +94,10 @@ METHOD(attribute_provider_t, acquire_address, host_t*,
 		}
 		vip = transaction->get_address(transaction);
 		vip = vip->clone(vip);
+		if ((lease_time = transaction->get_lease_time(transaction)))
+		{
+			ike_sa->set_auth_lifetime(ike_sa, lease_time);
+		}
 		this->mutex->lock(this->mutex);
 		old = this->transactions->put(this->transactions,
 							(void*)hash_transaction(transaction), transaction);
