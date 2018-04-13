@@ -127,6 +127,7 @@ typedef enum {
 	DHCP_HOST_NAME = 12,
 	DHCP_NBNS_SERVER = 44,
 	DHCP_REQUESTED_IP = 50,
+	DHCP_LEASE_TIME = 51,
 	DHCP_MESSAGE_TYPE = 53,
 	DHCP_SERVER_ID = 54,
 	DHCP_PARAM_REQ_LIST = 55,
@@ -464,6 +465,7 @@ static void handle_offer(private_dhcp_socket_t *this, dhcp_t *dhcp, int optlen)
 	dhcp_transaction_t *transaction = NULL;
 	enumerator_t *enumerator;
 	host_t *offer, *server = NULL;
+	ike_sa_t *ike_sa;
 
 	offer = host_create_from_chunk(AF_INET,
 					chunk_from_thing(dhcp->your_address), 0);
@@ -508,6 +510,14 @@ static void handle_offer(private_dhcp_socket_t *this, dhcp_t *dhcp, int optlen)
 			{
 				server = host_create_from_chunk(AF_INET,
 							chunk_create(option->data, 4), DHCP_SERVER_PORT);
+			}
+			if (option->type == DHCP_LEASE_TIME && option->len == 4)
+			{
+				ike_sa = charon->bus->get_sa(charon->bus);
+				if (ike_sa)
+				{
+					ike_sa->set_auth_lifetime(ike_sa, untoh32(option->data));
+				}
 			}
 			optlen -= optsize;
 			optpos += optsize;
